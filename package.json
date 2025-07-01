@@ -1,7 +1,7 @@
 {
-  "name": "n8n-nodes-<...>",
+  "name": "n8n-nodes-mongodb-filter",
   "version": "0.1.0",
-  "description": "",
+  "description": "n8n community nodes for MongoDB operations",
   "keywords": [
     "n8n-community-node-package"
   ],
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/<...>/n8n-nodes-<...>.git"
+    "url": "https://github.com/jpsampaior/n8n-nodes-mongodb-filter.git"
   },
   "engines": {
     "node": ">=20.15"
@@ -38,7 +38,8 @@
     ],
     "nodes": [
       "dist/nodes/ExampleNode/ExampleNode.node.js",
-      "dist/nodes/HttpBin/HttpBin.node.js"
+      "dist/nodes/HttpBin/HttpBin.node.js",
+      "dist/nodes/MongoDBFilter/MongoDBFilter.node.js"
     ]
   },
   "devDependencies": {
@@ -51,5 +52,8 @@
   },
   "peerDependencies": {
     "n8n-workflow": "*"
+  },
+  "dependencies": {
+    "link": "^2.1.1"
   }
 }
