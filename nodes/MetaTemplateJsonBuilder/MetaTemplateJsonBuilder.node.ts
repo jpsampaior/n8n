@@ -31,7 +31,7 @@ export class MetaTemplateJsonBuilder implements INodeType {
 				displayName: 'TemplateEEEE',
 				name: 'template',
 				type: 'options',
-				options: [], // Será carregado dinamicamente
+				options: [],
 				default: '',
 				description: 'Escolha o template',
 				required: true,
@@ -69,11 +69,9 @@ export class MetaTemplateJsonBuilder implements INodeType {
 					},
 				],
 			},
-			// Inputs dinâmicos para parâmetros do template e telefone serão adicionados depois
 		],
 	};
 
-	// Métodos para carregar templates e parâmetros serão implementados depois
 
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const items = this.getInputData();
@@ -98,7 +96,6 @@ export class MetaTemplateJsonBuilder implements INodeType {
 		return [output.map((o) => ({ json: o }))];
 	}
 
-	// Adiciona método para carregar templates dinamicamente
 	methods = {
 		loadOptions: {
 			async getTemplates(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
@@ -114,10 +111,31 @@ export class MetaTemplateJsonBuilder implements INodeType {
 				if (!response.data || !Array.isArray(response.data)) {
 					throw new NodeOperationError(this.getNode(), 'Não foi possível obter os templates');
 				}
-				return response.data.map((tpl: any) => ({
-					name: tpl.name,
-					value: tpl.name,
-				})) as INodePropertyOptions[];
+				
+				return response.data.map((tpl: any) => {
+					const templateName = tpl.name;
+					
+					const bodyComponent = tpl.components?.find((comp: any) => comp.type === 'BODY');
+					const bodyText = bodyComponent?.text ?? 'Sem conteúdo disponível';
+					
+					const paramMatches = bodyText.match(/\{\{\d+\}\}/g) ?? [];
+					const paramCount = paramMatches.length;
+					
+					let preview = bodyText;
+					for (let i = 1; i <= paramCount; i++) {
+						preview = preview.replace(new RegExp(`\\{\\{${i}\\}\\}`, 'g'), `[Parâmetro ${i}]`);
+					}
+					
+					if (preview.length > 100) {
+						preview = preview.substring(0, 97) + '...';
+					}
+					
+					return {
+						name: `${templateName} (${paramCount} parâmetros)`,
+						value: templateName,
+						description: preview,
+					};
+				}) as INodePropertyOptions[];
 			},
 		},
 	};
