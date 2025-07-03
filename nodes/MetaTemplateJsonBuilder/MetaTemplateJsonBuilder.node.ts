@@ -20,33 +20,15 @@ export class MetaTemplateJsonBuilder implements INodeType {
 		},
 		inputs: [NodeConnectionType.Main],
 		outputs: [NodeConnectionType.Main],
+		credentials: [
+			{
+				name: 'metaApi',
+				required: true,
+			},
+		],
 		properties: [
 			{
-				displayName: 'Weba Id',
-				name: 'webaId',
-				type: 'string',
-				default: '',
-				required: true,
-			},
-			{
-				displayName: 'Access Token',
-				name: 'accessToken',
-				type: 'string',
-				default: '',
-				required: true,
-				typeOptions: {
-					password: true,
-				},
-			},
-			{
-				displayName: 'API Version',
-				name: 'apiVersion',
-				type: 'string',
-				default: 'v19.0',
-				required: true,
-			},
-			{
-				displayName: 'Template',
+				displayName: 'TemplateEEEE',
 				name: 'template',
 				type: 'options',
 				options: [], // Será carregado dinamicamente
@@ -120,9 +102,10 @@ export class MetaTemplateJsonBuilder implements INodeType {
 	methods = {
 		loadOptions: {
 			async getTemplates(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-				const webaId = this.getNodeParameter('webaId', 0) as string;
-				const accessToken = this.getNodeParameter('accessToken', 0) as string;
-				const apiVersion = this.getNodeParameter('apiVersion', 0) as string;
+				const credentials = await this.getCredentials('metaApi');
+				const webaId = credentials.webaId as string;
+				const accessToken = credentials.accessToken as string;
+				const apiVersion = credentials.apiVersion as string;
 				const url = `https://graph.facebook.com/${apiVersion}/${webaId}/message_templates?access_token=${accessToken}`;
 				const response = await this.helpers.httpRequest({
 					method: 'GET',

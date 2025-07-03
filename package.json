@@ -37,7 +37,8 @@
       "dist/credentials/HttpBinApi.credentials.js",
       "dist/credentials/FacebookApi.credentials.js",
       "dist/credentials/FacebookWhatsAppExample.credentials.js",
-      "dist/credentials/WhatsAppBusinessApi.credentials.js"
+      "dist/credentials/WhatsAppBusinessApi.credentials.js",
+      "dist/credentials/MetaApi.credentials.js"
     ],
     "nodes": [
       "dist/nodes/ExampleNode/ExampleNode.node.js",
@@ -46,7 +47,8 @@
       "dist/nodes/MongoDBFilterArray/MongoDBFilterArray.node.js",
       "dist/nodes/MongoDBMultiCollectionQuery/MongoDBMultiCollectionQuery.node.js",
       "dist/nodes/FacebookTemplates/FacebookTemplates.node.js",
-      "dist/nodes/WhatsAppBusiness/WhatsAppBusiness.node.js"
+      "dist/nodes/WhatsAppBusiness/WhatsAppBusiness.node.js",
+      "dist/nodes/MetaTemplateJsonBuilder/MetaTemplateJsonBuilder.node.js"
     ]
   },
   "devDependencies": {
