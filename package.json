@@ -1,7 +1,7 @@
 {
   "name": "n8n-nodes-mongodb-filter",
   "version": "0.1.0",
-  "description": "n8n community nodes for MongoDB operations",
+  "description": "n8n community nodes for MongoDB operations and WhatsApp Business API",
   "keywords": [
     "n8n-community-node-package"
   ],
@@ -34,13 +34,19 @@
     "n8nNodesApiVersion": 1,
     "credentials": [
       "dist/credentials/ExampleCredentialsApi.credentials.js",
-      "dist/credentials/HttpBinApi.credentials.js"
+      "dist/credentials/HttpBinApi.credentials.js",
+      "dist/credentials/FacebookApi.credentials.js",
+      "dist/credentials/FacebookWhatsAppExample.credentials.js",
+      "dist/credentials/WhatsAppBusinessApi.credentials.js"
     ],
     "nodes": [
       "dist/nodes/ExampleNode/ExampleNode.node.js",
       "dist/nodes/HttpBin/HttpBin.node.js",
       "dist/nodes/MongoDBFilter/MongoDBFilter.node.js",
-      "dist/nodes/MongoDBFilterArray/MongoDBFilterArray.node.js"
+      "dist/nodes/MongoDBFilterArray/MongoDBFilterArray.node.js",
+      "dist/nodes/MongoDBMultiCollectionQuery/MongoDBMultiCollectionQuery.node.js",
+      "dist/nodes/FacebookTemplates/FacebookTemplates.node.js",
+      "dist/nodes/WhatsAppBusiness/WhatsAppBusiness.node.js"
     ]
   },
   "devDependencies": {
