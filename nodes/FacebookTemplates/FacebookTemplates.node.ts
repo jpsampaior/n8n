@@ -223,18 +223,22 @@ export class FacebookTemplates implements INodeType {
 				// Processar resposta
 				if (response.data && Array.isArray(response.data)) {
 					for (const template of response.data) {
-						const processedTemplate = {
-							...template,
+						const processedTemplate: any = {
+							name: template.name,
 							wabaId,
 							apiVersion,
 						};
+
+						// Adicionar texto do primeiro componente se existir
+						if (template.components && template.components.length > 0 && template.components[0].text) {
+							processedTemplate.text = template.components[0].text;
+						}
 
 						// Processar parâmetros se solicitado
 						if (additionalFields.includeParameters && template.components) {
 							const paramInfo = processTemplateParameters(template.components);
 							processedTemplate.parameterCount = paramInfo.parameterCount;
 							processedTemplate.parameterTypes = paramInfo.parameterTypes;
-							processedTemplate.parameters = paramInfo.parameters;
 						}
 
 						returnData.push({
