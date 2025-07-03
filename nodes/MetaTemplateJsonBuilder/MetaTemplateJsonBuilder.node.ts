@@ -77,17 +77,17 @@ export class MetaTemplateJsonBuilder implements INodeType {
 
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const items = this.getInputData();
-		const templateId = this.getNodeParameter('template', 0) as string;
-		const phone = this.getNodeParameter('phone', 0) as string;
-		const parametersCollection = this.getNodeParameter('parameters', 0, []) as { parameter: { value: string }[] };
-
-		const parameters = (parametersCollection.parameter || []).map((param) => ({
-			type: 'TEXT',
-			value: param.value,
-		}));
-
+		
 		const output = items.map((item, index) => {
-			// Se quiser pegar valores dinâmicos da entrada, pode ajustar aqui
+			const templateId = this.getNodeParameter('template', index) as string;
+			const phone = this.getNodeParameter('phone', index) as string;
+			const parametersCollection = this.getNodeParameter('parameters', index, []) as { parameter: { value: string }[] };
+
+			const parameters = (parametersCollection.parameter || []).map((param) => ({
+				type: 'TEXT',
+				value: param.value,
+			}));
+
 			return {
 				templateId,
 				phone,
