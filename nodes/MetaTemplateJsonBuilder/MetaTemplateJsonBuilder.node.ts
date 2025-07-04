@@ -28,7 +28,7 @@ export class MetaTemplateJsonBuilder implements INodeType {
 		],
 		properties: [
 			{
-				displayName: 'TemplateEEEE',
+				displayName: 'Template',
 				name: 'template',
 				type: 'options',
 				options: [],
@@ -43,6 +43,14 @@ export class MetaTemplateJsonBuilder implements INodeType {
 				type: 'string',
 				default: '',
 				description: 'Telefone do destinatário no formato internacional',
+				required: true,
+			},
+			{
+				displayName: 'Patient ID',
+				name: 'patientId',
+				type: 'string',
+				default: '',
+				description: 'ID do paciente',
 				required: true,
 			},
 			{
@@ -79,6 +87,7 @@ export class MetaTemplateJsonBuilder implements INodeType {
 		const output = items.map((item, index) => {
 			const templateId = this.getNodeParameter('template', index) as string;
 			const phone = this.getNodeParameter('phone', index) as string;
+			const patientId = this.getNodeParameter('patientId', index) as string;
 			const parametersCollection = this.getNodeParameter('parameters', index, []) as { parameter: { value: string }[] };
 
 			const parameters = (parametersCollection.parameter || []).map((param) => ({
@@ -89,6 +98,7 @@ export class MetaTemplateJsonBuilder implements INodeType {
 			return {
 				templateId,
 				phone,
+				patientId,
 				parameters,
 			};
 		});
