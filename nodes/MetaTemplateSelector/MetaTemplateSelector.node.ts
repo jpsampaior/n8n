@@ -14,7 +14,7 @@ export class MetaTemplateSelector implements INodeType {
 		name: 'metaTemplateSelector',
 		group: ['transform'],
 		version: 1,
-		description: 'Seleciona um template do Meta/WhatsApp e define quantidade de horas',
+		description: 'Seleciona múltiplos templates do Meta/WhatsApp, cada um com sua quantidade de horas',
 		defaults: {
 			name: 'Meta Template Selector',
 		},
@@ -28,26 +28,44 @@ export class MetaTemplateSelector implements INodeType {
 		],
 		properties: [
 			{
-				displayName: 'Template',
-				name: 'template',
-				type: 'options',
-				options: [],
-				default: '',
-				description: 'Escolha o template',
-				required: true,
-				typeOptions: { loadOptionsMethod: 'getTemplates' },
-			},
-			{
-				displayName: 'Quantidade de Horas',
-				name: 'hours',
-				type: 'number',
-				default: 1,
-				description: 'Quantidade de horas',
-				required: true,
+				displayName: 'Templates',
+				name: 'templates',
+				type: 'fixedCollection',
+				placeholder: 'Adicionar Template',
+				default: {},
 				typeOptions: {
-					minValue: 1,
-					maxValue: 168, // 7 dias * 24 horas
+					multipleValues: true,
 				},
+				options: [
+					{
+						displayName: 'Template',
+						name: 'template',
+						values: [
+							{
+								displayName: 'Template',
+								name: 'templateName',
+								type: 'options',
+								options: [],
+								default: '',
+								description: 'Escolha o template',
+								required: true,
+								typeOptions: { loadOptionsMethod: 'getTemplates' },
+							},
+							{
+								displayName: 'Quantidade de Horas',
+								name: 'hours',
+								type: 'number',
+								default: 1,
+								description: 'Quantidade de horas para este template',
+								required: true,
+								typeOptions: {
+									minValue: 1,
+									maxValue: 168, // 7 dias * 24 horas
+								},
+							},
+						],
+					},
+				],
 			},
 		],
 	};
@@ -56,12 +74,17 @@ export class MetaTemplateSelector implements INodeType {
 		const items = this.getInputData();
 		
 		const output = items.map((item, index) => {
-			const template = this.getNodeParameter('template', index) as string;
-			const hours = this.getNodeParameter('hours', index) as number;
+			const templatesCollection = this.getNodeParameter('templates', index, []) as { 
+				template: { templateName: string; hours: number }[] 
+			};
+
+			const templates = (templatesCollection.template || []).map((tmpl) => ({
+				template: tmpl.templateName,
+				hours: tmpl.hours,
+			}));
 
 			return {
-				template,
-				hours,
+				templates,
 			};
 		});
 
